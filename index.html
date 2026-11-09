@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ConnectSphere — Registro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+      color: #fff;
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #e94560, #0f3460, #533483);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 8px rgba(233,69,96,0.4));
+    }
+
+    .header p {
+      color: #a0aec0;
+      margin-top: 6px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── CARD PRINCIPAL ── */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 820px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* ── SECCIONES ── */
+    .section {
+      margin-bottom: 35px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e94560;
+      border-bottom: 2px solid rgba(233,69,96,0.3);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title span {
+      font-size: 1.3rem;
+    }
+
+    /* ── GRID DE CAMPOS ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .grid-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #cbd5e0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    label .required {
+      color: #e94560;
+      margin-left: 3px;
+    }
+
+    label .optional {
+      color: #718096;
+      font-weight: 400;
+      font-size: 0.78rem;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="url"],
+    input[type="number"],
+    select,
+    textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 12px 15px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+      outline: none;
+      width: 100%;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #4a5568;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #e94560;
+      background: rgba(233,69,96,0.08);
+      box-shadow: 0 0 0 3px rgba(233,69,96,0.2);
+    }
+
+    select option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* ── MEDIDOR DE CONTRASEÑA ── */
+    .password-strength {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      flex: 1;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.3s;
+    }
+
+    .strength-bar.weak   { background: #e53e3e; }
+    .strength-bar.medium { background: #dd6b20; }
+    .strength-bar.strong { background: #38a169; }
+
+    .strength-label {
+      font-size: 0.75rem;
+      color: #718096;
+      margin-top: 4px;
+    }
+
+    /* ── INTERESES ── */
+    .interests-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .interest-chip {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 7px 16px;
+      color: #cbd5e0;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      user-select: none;
+    }
+
+    .interest-chip:hover {
+      background: rgba(233,69,96,0.2);
+      border-color: #e94560;
+      color: #fff;
+    }
+
+    .interest-chip.selected {
+      background: linear-gradient(135deg, #e94560, #533483);
+      border-color: transparent;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ── RADIO Y CHECKBOX ── */
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .radio-group label,
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: #cbd5e0;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #e94560;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── PRIVACIDAD ── */
+    .privacy-block {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 15px;
+    }
+
+    .privacy-block h4 {
+      color: #90cdf4;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    /* ── CAPTCHA ── */
+    .captcha-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+      user-select: none;
+      width: fit-content;
+    }
+
+    .captcha-box:hover {
+      background: rgba(255,255,255,0.09);
+    }
+
+    .captcha-box input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+    }
+
+    .captcha-box span {
+      color: #cbd5e0;
+      font-size: 0.95rem;
+    }
+
+    .captcha-logo {
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: #4a5568;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* ── CÓDIGO VERIFICACIÓN ── */
+    .code-inputs {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .code-inputs input {
+      width: 50px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding: 10px 5px;
+      letter-spacing: 2px;
+    }
+
+    .code-hint {
+      font-size: 0.8rem;
+      color: #718096;
+      margin-top: 6px;
+    }
+
+    /* ── TÉRMINOS ── */
+    .terms-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .terms-block label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #cbd5e0;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    .terms-block a {
+      color: #63b3ed;
+      text-decoration: underline;
+    }
+
+    .terms-block a:hover {
+      color: #e94560;
+    }
+
+    /* ── BOTÓN PRINCIPAL ── */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #e94560, #533483);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: transform 0.2s, box-shadow 0.3s, opacity 0.3s;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(233,69,96,0.5);
+      opacity: 0.95;
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    /* ── FOOTER DEL FORM ── */
+    .form-footer {
+      text-align: center;
+      margin-top: 24px;
+      color: #718096;
+      font-size: 0.88rem;
+    }
+
+    .form-footer a {
+      color: #63b3ed;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .form-footer a:hover {
+      color: #e94560;
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 20px;
+      color: #4a5568;
+      font-size: 0.8rem;
+    }
+
+    /* ── FOTO DE PERFIL ── */
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avatar-preview {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e94560, #533483);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .btn-upload {
+      background: rgba(255,255,255,0.07);
+      border: 1px dashed rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 10px 20px;
+      color: #cbd5e0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-upload:hover {
+      background: rgba(233,69,96,0.1);
+      border-color: #e94560;
+      color: #fff;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .card {
+        padding: 25px 18px;
+      }
+
+      .code-inputs input {
+        width: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <h1>🌐 ConnectSphere</h1>
+    <p>Tu mundo, tu comunidad</p>
+  </div>
+
+  <!-- ══ FORMULARIO ══ -->
+  <div class="card">
+    <form id="registerForm" novalidate>
+
+      <!-- ── 1. INFORMACIÓN PERSONAL ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>👤</span> Información Personal
+        </div>
+        <div class="grid-2">
+
+          <div class="field">
+            <label>Nombre(s) <span class="required">*</span></label>
+            <input type="text" placeholder="Ej: María Fernanda" minlength="2" required />
+          </div>
+
+          <div class="field">
+            <label>Apellido(s) <span class="required">*</span></label>
+            <input type="text" placeholder="Ej: García López" minlength="2" required />
+          </div>
+
+          <div class="field">
+            <label>Fecha de nacimiento <span class="required">*</span></label>
+            <input type="date" required />
+          </div>
+
+          <div class="field">
+            <label>Género <span class="required">*</span></label>
+            <select required>
+              <option value="" disabled selected>— Seleccionar —</option>
+              <option>Masculino</option>
+              <option>Femenino</option>
+              <option>No binario</option>
+              <option>Prefiero no decirlo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>País de residencia <span class="required">*</span></label>
+            <select required>
+              <option value="" disabled selected>— Seleccionar país —</option>
+              <option>Argentina</option>
+              <option>Bolivia</option>
+              <option>Chile</option>
+              <option>Colombia</option>
+              <option>Costa Rica</option>
+              <option>Cuba</option>
+              <option>Ecuador</option>
+              <option>El Salvador</option>
+              <option>España</option>
+              <option>Guatemala</option>
+              <option>Honduras</option>
+              <option>México</option>
+              <option>Nicaragua</option>
+              <option>Panamá</option>
+              <option>Paraguay</option>
+              <option>Perú</option>
+              <option>Puerto Rico</option>
+              <option>República Dominicana</option>
+              <option>Uruguay</option>
+              <option>Venezuela</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Ciudad <span class="optional">(opcional)</span></label>
+            <input type="text" placeholder="Ej: Buenos Aires" />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 2. DATOS DE CUENTA ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>🔐</span> Datos de Cuenta
+        </div>
+        <div class="grid-2">
+
+          <div class="field full">
+            <label>Nombre de usuario <span class="required">*</span></label>
+            <input type="text" placeholder="Ej: maria_garcia95 (4–20 caracteres, sin espacios)" minlength="4" maxlength="20" required />
+          </div>
+
+          <div class="field">
+            <label>Correo electrónico <span class="required">*</span></label>
+            <input type="email" placeholder="Ej: maria@correo.com" required />
+          </div>
+
+          <div class="field">
+            <label>Confirmar correo <span class="required">*</span></label>
+            <input type="email" placeholder="Repite tu correo" required />
+          </div>
+
+          <div class="field">
+            <label>Contraseña <span class="required">*</span></label>
+            <input type="password" id="passwordInput" placeholder="Mín. 8 caracteres" minlength="8" required />
+            <div class="password-strength">
+              <div class="strength-bar" id="bar1"></div>
+              <div class="strength-bar" id="bar2"></div>
+              <div class="strength-bar" id="bar3"></div>
+              <div class="strength-bar" id="bar4"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel">Ingresa una contraseña</div>
+          </div>
+
+          <div class="field">
+            <label>Confirmar contraseña <span class="required">*</span></label>
+            <input type="password" placeholder="Repite tu contraseña" required />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 3. PERFIL INICIAL ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>🖼️</span> Perfil Inicial <span style="font-size:0.8rem; color:#718096; text-transform:none; font-weight:400;">(opcional)</span>
+        </div>
+        <div class="grid-1">
+
+          <div class="field">
+            <label>Foto de perfil <span class="optional">(JPG/PNG · máx. 5 MB)</span></label>
+            <div class="avatar-upload">
+              <div class="avatar-preview" id="avatarPreview">
+                👤
+                <img id="avatarImg" src="" alt="preview" />
+              </div>
+              <div>
+                <label class="btn-upload" for="avatarFile">📁 Seleccionar imagen</label>
+                <input type="file" id="avatarFile" accept="image/png, image/jpeg" style="display:none;" />
+                <div style="font-size:0.78rem; color:#4a5568; margin-top:6px;">Sin imagen se usará el avatar por defecto</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Biografía <span class="optional">(máx. 160 caracteres)</span></label>
+            <textarea id="bioText" maxlength="160" placeholder="Cuéntale al mundo quién eres..."></textarea>
+            <div style="font-size:0.78rem; color:#4a5568; text-align:right;" id="bioCount">0 / 160</div>
+          </div>
+
+          <div class="field">
+            <label>Sitio web / Portfolio <span class="optional">(opcional)</span></label>
+            <input type="url" placeholder="https://mipagina.com" />
+          </div>
+
+          <div class="field">
+            <label>Intereses <span class="optional">(selecciona los que quieras)</span></label>
+            <div class="interests-grid">
+              <div class="interest-chip" onclick="toggleChip(this)">⚽ Deportes</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🎵 Música</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🎨 Arte</div>
+              <div class="interest-chip" onclick="toggleChip(this)">💻 Tecnología</div>
+              <div class="interest-chip" onclick="toggleChip(this)">✈️ Viajes</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🍕 Gastronomía</div>
+              <div class="interest-chip" onclick="toggleChip(this)">📚 Lectura</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🎬 Cine</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🎮 Videojuegos</div>
+              <div class="interest-chip" onclick="toggleChip(this)">🌿 Naturaleza</div>
+              <div class="interest-chip" onclick="toggleChip(this)">📸 Fotografía</div>
+              <div class="interest-chip" onclick="toggleChip(this)">💪 Fitness</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 4. PRIVACIDAD ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>🔒</span> Preferencias de Privacidad
+        </div>
+
+        <div class="privacy-block">
+          <h4>¿Cómo quieres que sea tu perfil?</h4>
+          <div class="radio-group">
+            <label><input type="radio" name="perfil" value="publico" checked /> 🌍 Público — cualquiera puede ver tu perfil</label>
+            <label><input type="radio" name="perfil" value="privado" /> 🔒 Privado — solo tus seguidores aprobados</label>
+          </div>
+        </div>
+
+        <div class="privacy-block">
+          <h4>¿Quién puede enviarte mensajes?</h4>
+          <div class="radio-group">
+            <label><input type="radio" name="mensajes" value="todos" checked /> 👥 Todos</label>
+            <label><input type="radio" name="mensajes" value="amigos" /> 👫 Solo personas que sigues</label>
+            <label><input type="radio" name="mensajes" value="nadie" /> 🚫 Nadie</label>
+          </div>
+        </div>
+
+        <div class="privacy-block">
+          <h4>¿Quién puede etiquetarte en publicaciones?</h4>
+          <div class="radio-group">
+            <label><input type="radio" name="etiquetas" value="todos" checked /> 👥 Todos</label>
+            <label><input type="radio" name="etiquetas" value="amigos" /> 👫 Solo amigos</label>
+            <label><input type="radio" name="etiquetas" value="nadie" /> 🚫 Nadie</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5. NOTIFICACIONES ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>🔔</span> Preferencias de Notificaciones
+        </div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" /> Recibir novedades y actualizaciones de ConnectSphere</label>
+          <label><input type="checkbox" checked /> Recibir recomendaciones personalizadas</label>
+          <label><input type="checkbox" checked /> Recibir alertas de seguridad por correo</label>
+          <label><input type="checkbox" /> Recibir newsletter semanal</label>
+        </div>
+      </div>
+
+      <!-- ── 6. VERIFICACIÓN ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>🤖</span> Verificación de Seguridad
+        </div>
+
+        <label style="color:#cbd5e0; font-size:0.85rem; font-weight:600; display:block; margin-bottom:10px;">
+          Confirma que no eres un robot
+        </label>
+        <div class="captcha-box" onclick="toggleCaptcha()">
+          <input type="checkbox" id="captchaCheck" />
+          <span id="captchaLabel">No soy un robot</span>
+          <div class="captcha-logo">🛡️<br/>reCAPTCHA</div>
+        </div>
+
+        <div style="margin-top: 22px;">
+          <label style="color:#cbd5e0; font-size:0.85rem; font-weight:600;">
+            Código de verificación <span class="required">*</span>
+          </label>
+          <div style="font-size:0.8rem; color:#718096; margin: 5px 0 8px;">
+            Ingresa el código de 6 dígitos enviado a tu correo
+          </div>
+          <div class="code-inputs">
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 1)" />
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 2)" />
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 3)" />
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 4)" />
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 5)" />
+            <input type="number" maxlength="1" min="0" max="9" oninput="moveNext(this, 6)" />
+          </div>
+          <div class="code-hint">¿No recibiste el código? <a href="#" style="color:#63b3ed;">Reenviar</a></div>
+        </div>
+      </div>
+
+      <!-- ── 7. TÉRMINOS ── -->
+      <div class="section">
+        <div class="section-title">
+          <span>✅</span> Términos y Condiciones
+        </div>
+        <div class="terms-block">
+          <label>
+            <input type="checkbox" required />
+            He leído y acepto los <a href="#">Términos de Servicio</a> <span class="required">*</span>
+          </label>
+          <label>
+            <input type="checkbox" required />
+            He leído y acepto la <a href="#">Política de Privacidad</a> <span class="required">*</span>
+          </label>
+          <label>
+            <input type="checkbox" required />
+            Confirmo que tengo al menos 13 años de edad <span class="required">*</span>
+          </label>
+          <label>
+            <input type="checkbox" />
+            Autorizo el uso de mis datos para mejorar la experiencia <span class="optional">(opcional)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ── BOTÓN ── -->
+      <button type="submit" class="btn-submit">🚀 Crear mi Cuenta</button>
+
+      <!-- ── FOOTER ── -->
+      <div class="form-footer">
+        ¿Ya tienes una cuenta? <a href="#">Iniciar sesión</a>
+        &nbsp;·&nbsp;
+        <a href="#">Centro de ayuda</a>
+      </div>
+
+      <div class="secure-badge">
+        🔒 Tus datos están protegidos con cifrado SSL de 256 bits
+        &nbsp;·&nbsp; ConnectSphere © 2025
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ══ SCRIPTS ══ -->
+  <script>
+
+    /* ── Chips de intereses ── */
+    function toggleChip(el) {
+      el.classList.toggle('selected');
+    }
+
+    /* ── Medidor de contraseña ── */
+    document.getElementById('passwordInput').addEventListener('input', function () {
+      const val = this.value;
+      const bars = [
+        document.getElementById('bar1'),
+        document.getElementById('bar2'),
+        document.getElementById('bar3'),
+        document.getElementById('bar4'),
+      ];
+      const label = document.getElementById('strengthLabel');
+
+      bars.forEach(b => { b.className = 'strength-bar'; });
+
+      let score = 0;
+      if (val.length >= 8)                     score++;
+      if (/[A-Z]/.test(val))                   score++;
+      if (/[0-9]/.test(val))                   score++;
+      if (/[^A-Za-z0-9]/.test(val))            score++;
+
+      const levels = ['weak','weak','medium','strong','strong'];
+      const texts  = ['', 'Muy débil 🔴','Débil 🟠','Aceptable 🟡','Fuerte 🟢'];
+
+      for (let i = 0; i < score; i++) {
+        bars[i].classList.add(levels[score]);
+      }
+      label.textContent = val.length === 0 ? 'Ingresa una contraseña' : texts[score];
+    });
+
+    /* ── Contador de biografía ── */
+    document.getElementById('bioText').addEventListener('input', function () {
+      document.getElementById('bioCount').textContent = this.value.length + ' / 160';
+    });
+
+    /* ── Vista previa de avatar ── */
+    document.getElementById('avatarFile').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const preview = document.getElementById('avatarPreview');
+        const img     = document.getElementById('avatarImg');
+        img.src = e.target.result;
+        img.style.display = 'block';
+        preview.textContent = '';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    /* ── Captcha toggle ── */
+    function toggleCaptcha() {
+      const cb    = document.getElementById('captchaCheck');
+      const label = document.getElementById('captchaLabel');
+      cb.checked  = !cb.checked;
+      label.textContent = cb.checked ? '✔ Verificado' : 'No soy un robot';
+      label.style.color = cb.checked ? '#38a169' : '';
+    }
+
+    /* ── Avance automático en código ── */
+    function moveNext(input, index) {
+      const val = input.value.toString();
+      if (val.length > 1) input.value = val.slice(0, 1);
+      if (val.length === 1 && index < 6) {
+        const all = document.querySelectorAll('.code-inputs input');
+        all[index].focus();
+      }
+    }
+
+    /* ── Submit ── */
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('✅ ¡Cuenta creada con éxito!\nRevisa tu correo para activarla.');
+    });
+
+  </script>
+</body>
+</html>
